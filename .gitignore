@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# Editors / IDEs
+.idea/
+.vscode/
+
+# Node / web tooling (in case it's added later)
+node_modules/
+
+# Generated chart output (kept out of source control)
+girls_growth_charts.png
+
+# Exported child-profile data (do not commit personal data)
+*.json

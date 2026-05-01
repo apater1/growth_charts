@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UK-WHO Growth Tracker</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+</head>
+<body>
+  <header class="app-header">
+    <h1>UK-WHO Growth Tracker</h1>
+    <p class="subtitle">
+      Plot a child's measurements on the WHO 0–4 year centile charts.
+      All data is stored locally in your browser.
+    </p>
+  </header>
+
+  <main class="app-main">
+    <aside class="sidebar">
+      <section class="profiles">
+        <div class="section-header">
+          <h2>Profiles</h2>
+          <button id="btn-new-profile" class="btn btn-primary">+ New</button>
+        </div>
+        <ul id="profile-list" class="profile-list"></ul>
+        <div class="data-tools">
+          <button id="btn-export" class="btn" type="button">Export</button>
+          <button id="btn-import" class="btn" type="button">Import</button>
+          <input id="import-file" type="file" accept="application/json,.json" hidden />
+        </div>
+      </section>
+
+      <form id="profile-form" class="profile-form" hidden>
+        <h3 id="profile-form-title">New profile</h3>
+        <label>
+          Name
+          <input type="text" name="name" required maxlength="60" />
+        </label>
+        <label>
+          Sex
+          <select name="sex" required>
+            <option value="female">Female</option>
+            <option value="male" disabled>Male (data not yet loaded)</option>
+          </select>
+        </label>
+        <label>
+          Date of birth
+          <input type="date" name="dob" required />
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" id="btn-cancel-profile" class="btn">Cancel</button>
+        </div>
+      </form>
+    </aside>
+
+    <section id="profile-detail" class="detail" hidden>
+      <header class="detail-header">
+        <div>
+          <h2 id="detail-name"></h2>
+          <p id="detail-meta" class="meta"></p>
+        </div>
+        <div class="detail-actions">
+          <button id="btn-edit-profile" class="btn">Edit</button>
+          <button id="btn-delete-profile" class="btn btn-danger">Delete</button>
+        </div>
+      </header>
+
+      <section class="entry">
+        <h3>Add measurement</h3>
+        <form id="measurement-form" class="measurement-form">
+          <label>
+            Date
+            <input type="date" name="date" required />
+          </label>
+          <label>
+            Weight (kg)
+            <input type="number" name="weight" step="0.01" min="0" />
+          </label>
+          <label>
+            Length / Height (cm)
+            <input type="number" name="length" step="0.1" min="0" />
+          </label>
+          <label>
+            Head circ. (cm)
+            <input type="number" name="head" step="0.1" min="0" />
+          </label>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+      </section>
+
+      <section class="entries">
+        <h3>Recorded measurements</h3>
+        <table id="entries-table">
+          <thead>
+            <tr>
+              <th>Date</th><th>Age</th>
+              <th>Weight (kg)</th><th>Length (cm)</th><th>Head (cm)</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <p id="entries-empty" class="empty-note">No measurements recorded yet.</p>
+      </section>
+
+      <section class="charts">
+        <div id="chart-weight" class="chart"></div>
+        <div id="chart-length" class="chart"></div>
+        <div id="chart-head" class="chart"></div>
+      </section>
+    </section>
+
+    <section id="empty-state" class="empty-state">
+      <p>Select a profile on the left, or create a new one to get started.</p>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    Centile data: WHO Child Growth Standards (2006). For educational use only.
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
