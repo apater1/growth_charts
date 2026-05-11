@@ -18,6 +18,7 @@ node_modules/
 
 # Generated chart output (kept out of source control)
 girls_growth_charts.png
+boys_growth_charts.png
 
 # Exported child-profile data (do not commit personal data)
 *.json

@@ -1,9 +1,9 @@
 # UK-WHO Growth Charts
 
-Two related tools for plotting children's growth on the UK-WHO 0–4 year centile charts:
+Two related tools for plotting children's growth on the UK-WHO / WHO 0–4 year centile charts:
 
-1. **`girls_growth_charts.py`** — a Python script that renders a static, print-ready PNG chart sheet for girls (Weight-for-age, Length/Height-for-age, Head circumference-for-age) using `matplotlib`.
-2. **`web/`** — a small static web app that lets you create child profiles, record measurements over time, and see them plotted live against the same centile lines. All data stays in your browser (`localStorage`); JSON export/import is supported for backups.
+1. **`girls_growth_charts.py`** / **`boys_growth_charts.py`** — Python scripts that render a static, print-ready PNG chart sheet (Weight-for-age, Length/Height-for-age, Head circumference-for-age) using `matplotlib`. Girls uses the UK-WHO tables; boys uses the WHO 2006 tables.
+2. **`web/`** — a small static web app that lets you create child profiles (male or female), record measurements over time, and see them plotted live against the same centile lines. All data stays in your browser (`localStorage`); JSON export/import is supported for backups.
 
 🌐 **Live web app:** <https://apater1.github.io/growth_charts/>
 
@@ -20,14 +20,15 @@ Two related tools for plotting children's growth on the UK-WHO 0–4 year centil
 
 ```
 .
-├── girls_growth_charts.py        # matplotlib chart-sheet generator (Python)
+├── girls_growth_charts.py        # matplotlib chart-sheet generator (girls, Python)
+├── boys_growth_charts.py         # matplotlib chart-sheet generator (boys, Python)
 ├── Boys_0-4_years_growth_chart.pdf   # reference PDFs
 ├── Girls_0-4_years_growth_chart.pdf
 ├── web/                          # the static web app
 │   ├── index.html
 │   ├── css/style.css
 │   └── js/
-│       ├── lms_data.js           # WHO girls LMS tables (mirrors the Python file)
+│       ├── lms_data.js           # WHO girls + boys LMS tables (mirror the Python files)
 │       ├── centiles.js           # LMS → value / z-score / centile math
 │       ├── store.js              # localStorage CRUD + import/export
 │       ├── charts.js             # Plotly rendering
@@ -55,6 +56,8 @@ source .venv/bin/activate
 pip install numpy matplotlib scipy
 python3 girls_growth_charts.py
 # produces girls_growth_charts.png
+python3 boys_growth_charts.py
+# produces boys_growth_charts.png
 ```
 
 ## Data sources

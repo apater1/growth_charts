@@ -11,8 +11,14 @@ import {
 } from './centiles.js';
 import { ageInMonths } from './store.js';
 
-const PINK = '#cc0066';
-const PINK_DARK = '#aa0055';
+const PALETTES = {
+  female: { centile: '#cc0066', titleDark: '#aa0055', marker: '#1f4e8c' },
+  male:   { centile: '#1f6fb2', titleDark: '#155080', marker: '#b04a00' },
+};
+
+function paletteFor(sex) {
+  return PALETTES[sex] || PALETTES.female;
+}
 
 // Plotly dash spec per centile (mirrors line_style() in the Python file).
 function dashFor(c) {
@@ -27,20 +33,20 @@ function widthFor(c) {
   return 1;
 }
 
-function centileTraces(table) {
+function centileTraces(table, palette) {
   const { ages, curves } = buildCurves(table);
   return CENTILES.map((c, idx) => ({
     x: ages,
     y: curves[c],
     mode: 'lines',
     name: CENTILE_LABELS[idx],
-    line: { color: PINK, width: widthFor(c), dash: dashFor(c) },
+    line: { color: palette.centile, width: widthFor(c), dash: dashFor(c) },
     hovertemplate: `${CENTILE_LABELS[idx]} centile<br>Age %{x:.1f}m<br>%{y:.2f}<extra></extra>`,
     showlegend: c === 50 || c === 0.4 || c === 99.6,
   }));
 }
 
-function measurementTrace(profile, table, measurementKey, unit) {
+function measurementTrace(profile, table, measurementKey, unit, palette) {
   const xs = [];
   const ys = [];
   const text = [];
@@ -64,16 +70,16 @@ function measurementTrace(profile, table, measurementKey, unit) {
     y: ys,
     mode: 'lines+markers',
     name: profile.name,
-    line: { color: '#1f4e8c', width: 1.5 },
-    marker: { color: '#1f4e8c', size: 8, symbol: 'circle' },
+    line: { color: palette.marker, width: 1.5 },
+    marker: { color: palette.marker, size: 8, symbol: 'circle' },
     text,
     hovertemplate: '%{text}<extra></extra>',
   };
 }
 
-function layoutFor(title, yLabel, ageMax) {
+function layoutFor(title, yLabel, ageMax, palette) {
   return {
-    title: { text: title, font: { color: PINK_DARK, size: 14 } },
+    title: { text: title, font: { color: palette.titleDark, size: 14 } },
     margin: { l: 55, r: 30, t: 40, b: 50 },
     paper_bgcolor: 'white',
     plot_bgcolor: '#fafafa',
@@ -108,6 +114,7 @@ const CHART_META = {
 export function renderCharts(profile) {
   const sexTables = REFERENCE_TABLES[profile.sex];
   if (!sexTables) return;
+  const palette = paletteFor(profile.sex);
 
   // Cap chart x-axis at the latest measurement age (rounded up) or full table range.
   const maxAge = Math.max(
@@ -118,10 +125,10 @@ export function renderCharts(profile) {
     const meta = CHART_META[key];
     const lmsTable = sexTables[table];
     const traces = [
-      ...centileTraces(lmsTable),
-      measurementTrace(profile, lmsTable, key, unit),
+      ...centileTraces(lmsTable, palette),
+      measurementTrace(profile, lmsTable, key, unit, palette),
     ];
-    const layout = layoutFor(meta.title, `${label} (${unit})`, maxAge);
+    const layout = layoutFor(meta.title, `${label} (${unit})`, maxAge, palette);
     Plotly.react(meta.domId, traces, layout, {
       displaylogo: false,
       responsive: true,

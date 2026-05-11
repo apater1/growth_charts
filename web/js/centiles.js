@@ -1,8 +1,11 @@
-// LMS centile computation, mirroring girls_growth_charts.py
+// LMS centile computation, mirroring girls_growth_charts.py / boys_growth_charts.py
 import {
   WEIGHT_LMS_GIRLS,
   LENGTH_LMS_GIRLS,
   HEAD_LMS_GIRLS,
+  WEIGHT_LMS_BOYS,
+  LENGTH_LMS_BOYS,
+  HEAD_LMS_BOYS,
 } from './lms_data.js';
 
 export const CENTILES = [0.4, 2, 9, 25, 50, 75, 91, 98, 99.6];
@@ -107,6 +110,11 @@ export const REFERENCE_TABLES = {
     weight: WEIGHT_LMS_GIRLS,
     length: LENGTH_LMS_GIRLS,
     head: HEAD_LMS_GIRLS,
+  },
+  male: {
+    weight: WEIGHT_LMS_BOYS,
+    length: LENGTH_LMS_BOYS,
+    head: HEAD_LMS_BOYS,
   },
 };
 
